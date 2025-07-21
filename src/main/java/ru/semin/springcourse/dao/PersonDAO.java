@@ -24,7 +24,10 @@ public class PersonDAO {
     public List<Person> index() {
       return jdbcTemplate.query("Select * From Person", new BeanPropertyRowMapper<>(Person.class));
     }
-
+    public Person show(String email){
+        return jdbcTemplate.query("select*from Person where email=?", new Object[]{email},
+        new BeanPropertyRowMapper<>(Person.class)).stream().findAny().orElse(null);
+    }
     public Person show(int id) throws SQLException {
 
 
@@ -44,14 +47,14 @@ public class PersonDAO {
 //
 //        preparedStatement.executeUpdate();
 
-        jdbcTemplate.update("INSERT INTO Person (name,age,email)VALUES ( ?,?,?)", person.getName(), person.getAge(),person.getEmail());
+        jdbcTemplate.update("INSERT INTO Person (name,age,email,address)VALUES ( ?,?,?,?)", person.getName(), person.getAge(),person.getEmail(),person.getAddress());
     }
 
     public void update(int id, Person updatedPerson) throws SQLException {
 
 
-        jdbcTemplate.update("UPDATE Person SET name=?,age=?,email=? Where id=?", updatedPerson.getName(), updatedPerson.getAge()
-        ,updatedPerson.getEmail(), id);
+        jdbcTemplate.update("UPDATE Person SET name=?,age=?,email=?,address=? Where id=?", updatedPerson.getName(), updatedPerson.getAge()
+        ,updatedPerson.getEmail(),updatedPerson.getAddress(), id);
 //        PreparedStatement preparedStatement =
 //                connection.prepareStatement("UPDATE Person SET name=?,age=?,email=? Where id=?");
 //        preparedStatement.setString(1, updatedPerson.getName());
@@ -95,7 +98,7 @@ public class PersonDAO {
     private List<Person> create1000people() {
         List<Person> people = new ArrayList<>();
         for (int i = 0; i < 1000; i++) {
-            people.add(new Person(i, "Name" + i, 30, "test"+i+"@mail.ru"));
+            people.add(new Person(i, "Name" + i, 30, "test"+i+"@mail.ru", "some address"));
 
         }
         return people;
