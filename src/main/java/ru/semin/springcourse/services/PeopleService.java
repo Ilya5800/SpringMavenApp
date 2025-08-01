@@ -32,7 +32,7 @@ public class PeopleService {
     }
     @Transactional
     public void save(Person person){
-        person.setMood(Mood.CALM);
+
 
         peopleRepository.save(person);
     }

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import ru.semin.springcourse.dao.PersonDAO;
 import ru.semin.springcourse.models.Person;
 import ru.semin.springcourse.services.ItemService;
 import ru.semin.springcourse.services.PeopleService;
@@ -17,25 +18,28 @@ import java.sql.SQLException;
 @Controller
 @RequestMapping("/people")
 public class PeopleController {
+    private final PersonDAO personDAO;
 
     private final PeopleService peopleService;
-    private final ItemService itemService;
+   // private final ItemService itemService;
 
         @Autowired
-    public PeopleController(PeopleService peopleService, ItemService itemService) {
-        this.peopleService = peopleService;
-            this.itemService = itemService;
+    public PeopleController(PersonDAO personDAO, PeopleService peopleService) {
+            this.personDAO = personDAO;
+            this.peopleService = peopleService;
+           // this.itemService = itemService;
         }
 
 
 
     @GetMapping()
     public String index(Model model) {
-        model.addAttribute("people", peopleService.findAll());
-
-        itemService.findByItemName("Airpods");
-        itemService.findByOwner(peopleService.findAll().get(0));
-        peopleService.test();
+//        model.addAttribute("people", peopleService.findAll());
+//
+//        itemService.findByItemName("Airpods");
+//        itemService.findByOwner(peopleService.findAll().get(0));
+//        peopleService.test();
+        personDAO.testNPlus1();
         return "people/index";
     }
 
